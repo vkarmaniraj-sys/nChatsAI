@@ -43,7 +43,7 @@
     "whatwg-url": "^14.0.0"
   },
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.9",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express-session": "^1.18.2",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/passport": "^1.0.17",
