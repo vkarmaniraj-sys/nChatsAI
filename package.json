@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
     "@types/express-session": "^1.18.2"
   }
 }
