@@ -147,7 +147,11 @@ passport.serializeUser((user: any, done: any) => {
     email_verified: user.email_verified,
   };
 
-  const token = jwt.sign(payload, process.env.SecratKey || 'FHIDKSIUEOF', { expiresIn: "1h" });
+const token = jwt.sign(
+  payload,
+  (process.env.SecratKey || 'FHIDKSIUEOF') as string,
+  { expiresIn: "1h" }
+);
   
   done(null, token); // store JWT in session
 });

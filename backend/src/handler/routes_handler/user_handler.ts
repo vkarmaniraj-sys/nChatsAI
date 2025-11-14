@@ -37,9 +37,11 @@ export const loginuser = async (bodydata: any) => {
         );
 
         if (ismatched) {
-          token = await jwt.sign(bodydata, process.env.SecratKey, {
-            expiresIn: "1h",
-          });
+         const token = jwt.sign(
+  bodydata,
+  (process.env.SecratKey || "default_secret") as string,
+  { expiresIn: "1h" }
+);
 
           return { message: "login successfull", token: token };
         } else {
