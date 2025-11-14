@@ -2,7 +2,6 @@ import { Request, Response, Router } from "express";
 import { createUser, loginuser } from "../handler/routes_handler/user_handler";
 import { CreateSubscription, GetSubscription, GetSubscriptionById, UpdateSubscriptionById } from "../handler/routes_handler/Sub_handler";
 const multer = require("multer");
-import jwt from "jsonwebtoken";
 require("dotenv").config();
 
 const mymulter = multer();
