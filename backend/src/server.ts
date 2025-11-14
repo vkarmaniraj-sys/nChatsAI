@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response ,RequestHandler } from "express";
 import http from "http";
 import { Server } from "socket.io";
 import { getAIResponse } from "./handler/together_API";
@@ -7,7 +7,7 @@ import Urouter from "./routers/user_router";
 import { dbconnection } from "./db/db_connection";
 import { Pinecone } from "@pinecone-database/pinecone";
 import cookieParser from "cookie-parser";
-import session from "express-session";
+import session,{SessionOptions} from "express-session";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 
@@ -74,20 +74,23 @@ const cors = require("cors");
 const port = process.env.PORT || 3000;
 
 // app.use(session({ secret: "secret", resave: false, saveUninitialized: true }));
-const sessionMiddleware = Esession({
+const sessionConfig: SessionOptions = {
   secret: "MYsecret",
   resave: false,
   saveUninitialized: true,
   cookie: {
-    maxAge: 1000 * 60 * 60, /// wait for 1hr
+    maxAge: 1000 * 60 * 60,
     secure: false,
     httpOnly: true,
-  }, // Set to `true` for HTTPS
-  genid: (req: any) => {
-    // Use custom sessionID if provided, else generate a random one
-    return req.CustomSessionID || uuidv4();
   },
-});
+  genid: (req: any) => {
+    return req.CustomSessionID || uuidv4();
+  }
+};
+
+// Explicitly cast as RequestHandler to fix TS2769
+const sessionMiddleware: RequestHandler = session(sessionConfig);
+
 
 app.use(sessionMiddleware);
 app.use(passport.initialize());
@@ -268,9 +271,25 @@ const io = new Server(server, {
 // });
 
 io.use((socket, next) => {
-  sessionMiddleware(socket.request as any, {} as any, next);
-  console.log("socket data user middleware", socket.request.user);
+  sessionMiddleware(socket.request as any, {} as any, (err: any) => {
+    if (err) {
+      return next(err);
+    }
+
+    // Now session is available
+    console.log("session loaded:", socket.request.session);
+
+    // If user is logged in using passport on HTTP routes, restore them here
+    passport.initialize()(socket.request as any, {} as any, () => {
+      passport.session()(socket.request as any, {} as any, () => {
+        console.log("socket data user middleware", socket.request.user);
+        next();
+      });
+    });
+
+  });
 });
+
 
 let userId: any;
 
@@ -325,46 +344,41 @@ io.on("connection", (socket) => {
 
       socket.request.CustomSessionID = CustomSessionID;
 
-      sessionMiddleware(socket.request, {}, () => {
-        // if (socket.request.session) {
-        //   socket.request.session.user = oldUser;
-        // }
-        console.log(
-          "oldPassport && socket.request.session",
-          oldPassport && socket.request.session
-        );
-        console.log("socket.request.session", socket.request.session);
-        if (oldPassport && socket.request.session) {
-          socket.request.session.passport = oldPassport;
-          console.log("old passport restored", socket.request.session.passport);
-        }
-        socket.request.session?.save((err) => {
-          if (err) {
-            console.log("error while saving sessionData");
-            socket.emit("session-error", { message: "Failed to save session" });
-            return;
-          }
+      sessionMiddleware(socket.request as any, {} as any, () => {
+  console.log(
+    "oldPassport && socket.request.session",
+    oldPassport && socket.request.session
+  );
 
-          passport.session()(socket.request, {}, () => {
-            console.log("Custom session created:", {
-              sessionID: socket.request.session?.id,
-              user: socket.request.user,
-            });
+  console.log("socket.request.session", socket.request.session);
 
-            //   socket.request.res?.cookie("connect.sid", CustomSessionID, {
-            //   httpOnly: true,
-            //   sameSite: "lax",
-            //   secure: false, // set true in production with HTTPS
-            // });
+  if (oldPassport && socket.request.session) {
+    socket.request.session.passport = oldPassport;
+    console.log("old passport restored", socket.request.session.passport);
+  }
 
-            socket.emit("session-updated", {
-              sessionID: socket.request.session?.id,
-              user: socket.request.user || null,
-              message: "New session created with custom ID",
-            });
-          });
-        });
+  socket.request.session?.save((err: any) => {
+    if (err) {
+      console.log("error while saving sessionData");
+      socket.emit("session-error", { message: "Failed to save session" });
+      return;
+    }
+
+    passport.session()(socket.request as any, {} as any, () => {
+      console.log("Custom session created:", {
+        sessionID: socket.request.session?.id,
+        user: socket.request.user,
       });
+
+      socket.emit("session-updated", {
+        sessionID: socket.request.session?.id,
+        user: socket.request.user || null,
+        message: "New session created with custom ID",
+      });
+    });
+  });
+});
+
     });
   });
 
