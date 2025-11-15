@@ -67,7 +67,6 @@ declare module "http" {
 // GoogleOAuth
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const Esession = require("express-session");
 // GoogleOAuth
 
 require("dotenv").config();
