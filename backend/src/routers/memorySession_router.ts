@@ -2,12 +2,12 @@ import express,{Router,Request,Response} from "express";
 import { DeleteMemosySessionWithSessionId, GetMemorySessionWithSessionId, GetSessionMemoryWithId, UpdateMemorySession } from "../handler/routes_handler/memorySession_handler";
 import { pushMessage } from "../utilis/message_buffer";
 
-declare module 'express-session' {
-  interface SessionData {
-    passport?: { user: any };
-    customField?: any;
-  }
-}
+// declare module 'express-session' {
+//   interface SessionData {
+//     passport?: { user: any };
+//     customField?: any;
+//   }
+// }
 
 const MSRouter = Router();
 
