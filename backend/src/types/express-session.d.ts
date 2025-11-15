@@ -1,4 +1,4 @@
-import "express-session";
+import * as expressSession from "express-session";
 
 declare module "express-session" {
   interface SessionData {
@@ -7,3 +7,5 @@ declare module "express-session" {
     passport?: any;
   }
 }
+
+export = expressSession;
