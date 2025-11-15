@@ -1,3 +1,5 @@
+declare module 'cookie-parser';
+
 import express, { Request, Response ,RequestHandler } from "express";
 import http from "http";
 import { Server } from "socket.io";

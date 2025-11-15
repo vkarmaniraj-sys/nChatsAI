@@ -1,5 +1,4 @@
 import { Request, Response, Router } from "express";
-import session from 'express-session';
 import { createUser, loginuser } from "../handler/routes_handler/user_handler";
 import { CreateSubscription, GetSubscription, GetSubscriptionById, UpdateSubscriptionById } from "../handler/routes_handler/Sub_handler";
 
