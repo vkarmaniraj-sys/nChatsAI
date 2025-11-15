@@ -1,4 +1,4 @@
-declare module 'cookie-parser';
+// declare module 'cookie-parser';
 
 import express, { Request, Response ,RequestHandler } from "express";
 import http from "http";
@@ -37,12 +37,13 @@ declare global {
   }
 }
 
-declare module "express-session" {
-  interface SessionData {
-    Userid?: string;
-    user?: any; // Add this line to allow 'user' property on session
-  }
-}
+// declare module "express-session" {
+//   interface SessionData {
+//     Userid?: string;
+//     user?: any; // Add this line to allow 'user' property on session
+//     passport?: any; // Add this line to allow 'passport' property on session
+//   }
+// }
 
 declare module "socket.io" {
   interface Socket {
