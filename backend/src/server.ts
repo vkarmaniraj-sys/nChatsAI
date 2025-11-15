@@ -9,7 +9,7 @@ import Urouter from "./routers/user_router";
 import { dbconnection } from "./db/db_connection";
 import { Pinecone } from "@pinecone-database/pinecone";
 import cookieParser from "cookie-parser";
-import session,{SessionOptions} from "express-session";
+import session, { SessionOptions, Session } from "express-session";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 
@@ -52,7 +52,7 @@ declare module "socket.io" {
 }
 
 // Extend IncomingMessage to include session property for TypeScript
-import type { Session } from "express-session";
+// import type { Session } from "express-session";
 import { JsonWebTokenError } from "jsonwebtoken";
 
 declare module "http" {
