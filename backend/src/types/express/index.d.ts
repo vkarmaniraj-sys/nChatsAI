@@ -4,6 +4,7 @@ declare global {
     interface User {}
 
     interface Request {
+      sessionID: string;
       isAuthenticated?: () => boolean;
     }
   }
