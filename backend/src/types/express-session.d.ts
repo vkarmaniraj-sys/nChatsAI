@@ -1,8 +1,9 @@
-import "express-session";
+import session from 'express-session';
 
-declare module "express-session" {
+declare module 'express-session' {
   interface SessionData {
+    // Add your custom session properties here
     userId?: string;
-    // add any custom session fields here
+    // ... other properties you use
   }
 }
