@@ -97,7 +97,8 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["src", "src/types"],
-"typeRoots": ["./node_modules/@types", "./src/types"],
+"typeRoots": ["./src/types", "./node_modules/@types"],
+    "types": ["node", "express-session"],
   // "include": [
   //   "src/**/*" ],
   "exclude": [
