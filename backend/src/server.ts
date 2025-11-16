@@ -412,5 +412,5 @@ app.get("", (req, res) => {
 // });
 
 server.listen(3000, "0.0.0.0", () => {
-  console.log("Socket server running on http://localhost:3000");
+  console.log(`Socket server running on ${import.meta.env.VITE_API_BackendBaseUrl}`);
 });

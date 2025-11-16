@@ -29,7 +29,7 @@ function Header() {
    }
 
    const handleLogin = () => {
-    window.location.href = "http://localhost:3000/auth/google";
+     window.location.href = `${import.meta.env.VITE_API_BackendBaseUrl}/auth/google`;
     // Change to your backend URL in production
   };
 
