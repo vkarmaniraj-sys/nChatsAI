@@ -9,7 +9,7 @@ import Urouter from "./routers/user_router";
 import { dbconnection } from "./db/db_connection";
 import { Pinecone } from "@pinecone-database/pinecone";
 import cookieParser from "cookie-parser";
-import session, {Session } from "express-session";
+import session from "express-session";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
 
@@ -57,7 +57,7 @@ import { JsonWebTokenError } from "jsonwebtoken";
 
 declare module "http" {
   interface IncomingMessage {
-    session?: Session & Partial<session.SessionData>;
+    session?: session.Session & Partial<session.SessionData>;
     CustomSessionID?: string;
     user?: any; // Add this line to fix the error
     res?: any;
