@@ -76,7 +76,7 @@ const cors = require("cors");
 const port = process.env.PORT || 3000;
 
 // app.use(session({ secret: "secret", resave: false, saveUninitialized: true }));
-const sessionConfig: SessionOptions = {
+const sessionConfig: session.SessionOptions = {
   secret: "MYsecret",
   resave: false,
   saveUninitialized: true,
