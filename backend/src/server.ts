@@ -337,7 +337,7 @@ io.on("connection", (socket) => {
     const oldPassport = socket.request.session?.passport;
     console.log("oldPassport", oldPassport);
 
-    session?.destroy((err) => {
+    session?.destroy((err: Error | null) => {
       if (err) {
         console.log("Error deploying sesion", err);
         socket.emit("Error in socket");
