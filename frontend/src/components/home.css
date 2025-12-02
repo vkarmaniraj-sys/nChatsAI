@@ -1,0 +1,136 @@
+.System-chat {
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  margin: 12px 0;
+  font-family: Arial, sans-serif;
+  font-size: 0.95rem;
+  color: #222;
+  line-height: 1.6;
+}
+
+/* Headings */
+.System-chat h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 1rem 0 0.5rem;
+  color: #1a202c;
+}
+
+.System-chat h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 1rem 0 0.5rem;
+  color: #2d3748;
+}
+
+.System-chat h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0.8rem 0 0.4rem;
+  color: #4a5568;
+}
+
+.System-chat h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.6rem 0 0.3rem;
+  color: #718096;
+}
+
+/* Paragraphs */
+.System-chat p {
+  margin: 0.6rem 0;
+}
+
+/* Bold text */
+.System-chat strong, .System-chat b {
+  font-weight: 700;
+  color: #1a202c;
+}
+
+/* Lists */
+.System-chat ul {
+  padding-left: 1.6rem;
+  margin: 0.6rem 0;
+  list-style-type: disc;
+}
+
+.System-chat ol {
+  padding-left: 1.6rem;
+  margin: 0.6rem 0;
+  list-style-type: decimal;
+}
+
+.System-chat li {
+  margin: 0.4rem 0;
+}
+
+/* Horizontal rule */
+.System-chat hr {
+  border-top: 3px solid #bbb;
+  height: 1px;
+  background: #e0e0e0;
+  margin: 24px 0;
+}
+
+/* Code blocks */
+.System-chat pre {
+  background-color: #646464;
+  color: #f8f8f2;
+  padding: 16px;
+  border-radius: 12px;
+  font-family: "Fira Code", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  box-shadow: 0 4px 12px rgba(58, 58, 58, 0.3);
+  overflow-x: auto;
+  margin: 20px 0;
+  border: 1px solid #333;
+}
+
+/* Scrollbar for code blocks */
+.System-chat pre::-webkit-scrollbar {
+  height: 6px;
+}
+
+.System-chat pre::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+/* Tables */
+.System-chat table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+.System-chat th,
+.System-chat td {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+}
+
+.System-chat th {
+  background-color: #e2e8f0;
+  border-bottom: 2px solid #cbd5e1;
+  font-weight: 600;
+}
+
+.System-chat td code {
+  background: #f4f4f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+}
+
+/* Optional: alternate row colors */
+.System-chat tbody tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+/* Optional: hover effect */
+.System-chat tbody tr:hover {
+  background-color: #e6f2ff;
+}
