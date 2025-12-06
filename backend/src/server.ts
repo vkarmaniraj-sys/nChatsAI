@@ -79,19 +79,40 @@ const cors = require("cors");
 const port = process.env.PORT || 3000;
 
 // app.use(session({ secret: "secret", resave: false, saveUninitialized: true }));
+// const sessionConfig: session.SessionOptions = {
+//   secret: "MYsecret",
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: {
+//     maxAge: 1000 * 60 * 60,
+//     secure: false,
+//     httpOnly: true,
+//   },
+//   genid: (req: any) => {
+//     return req.CustomSessionID || uuidv4();
+//   }
+// };
+
+// for production 
+
+app.set("trust proxy", 1);  // VERY IMPORTANT ON RENDER
+
 const sessionConfig: session.SessionOptions = {
   secret: "MYsecret",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,   // FIXED
   cookie: {
     maxAge: 1000 * 60 * 60,
-    secure: false,
+    secure: true,             // REQUIRED ON HTTPS
     httpOnly: true,
+    sameSite: "none",         // REQUIRED for cross-site cookies
   },
   genid: (req: any) => {
     return req.CustomSessionID || uuidv4();
   }
 };
+
+
 
 // Explicitly cast as RequestHandler to fix TS2769
 const sessionMiddleware: RequestHandler = session(sessionConfig);
