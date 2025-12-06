@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "npm run build && npx serve -s dist -l 4200"
+    "start": "npm run build && npx serve -s dist -l 5173"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",

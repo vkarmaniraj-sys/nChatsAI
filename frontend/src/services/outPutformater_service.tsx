@@ -2,18 +2,18 @@ import katex from "katex";
 import 'katex/dist/katex.min.css';
 
 
-let currenttype: string = '';
-let isheading: string = '';
-let islist: boolean = false;
+// let currenttype: string = '';
+// let isheading: string = '';
+// let islist: boolean = false;
 let isBlockFormula: boolean = false;
-let isBlockCode: boolean = false;
+// let isBlockCode: boolean = false;
 let isinlineFormula: boolean = false;
 let isBlockFormulaForMerge: boolean = false;
 let checkboolean = false;
-let isUnOrdernext = false;
-let isUnOrderEndWaiting = false;
-let UnOrderListCount: number = 0;
-let headinglevel: number = 1;
+// let isUnOrdernext = false;
+// let isUnOrderEndWaiting = false;
+// let UnOrderListCount: number = 0;
+// let headinglevel: number = 1;
 // let chuckcount = 0;
 const murgedchucksarry: string[] = [];
 let currentchuck = "";
@@ -79,146 +79,146 @@ function murgetwochuckattime(chuckData: string) {
     //add every value with currentchuck
 }
 
-function headingFormater(chuckData: string): string {
-    let headingMatch: RegExpMatchArray | null = null;
-    let UnOrderListEnd = "";
-    // isheading = '';
-    //chuckData ### **2. isheading ###
+// function headingFormater(chuckData: string): string {
+//     let headingMatch: RegExpMatchArray | null = null;
+//     let UnOrderListEnd = "";
+//     // isheading = '';
+//     //chuckData ### **2. isheading ###
 
-    while (chuckData.includes("#")) {
-        if (!isheading.includes("#")) {
-            headingMatch = chuckData.match(/(.*?)\s*(#{1,6})\s*(.+?)\s*$/);
-        }
-        else{
-            headingMatch = chuckData.match(/(.*?)\s*(#{1,6})\s*(.+?)\s*$/);
-        }
+//     while (chuckData.includes("#")) {
+//         if (!isheading.includes("#")) {
+//             headingMatch = chuckData.match(/(.*?)\s*(#{1,6})\s*(.+?)\s*$/);
+//         }
+//         else{
+//             headingMatch = chuckData.match(/(.*?)\s*(#{1,6})\s*(.+?)\s*$/);
+//         }
 
-        if (headingMatch) {
+//         if (headingMatch) {
 
-            const prefix = headingMatch[1];                   // "something"
-            const level = headingMatch[2].length;             // 3
-            const content = headingMatch[3];              // "heading"
-
-
-            // const level = headingMatch[1].length;
-            // const content = headingMatch[2].trim();
-            headinglevel = level;
-            isheading = "#".repeat(level);
-
-            //checking UorderListBeforeHeading
-            islist = true;
-            if (isUnOrderEndWaiting) {
-                isUnOrderEndWaiting = false;
-                UnOrderListEnd = "</li></ul>";
-                UnOrderListCount = 0;
-            }else{
-                UnOrderListEnd = "";
-            }
-
-            if (content.includes(":")) {
-                const [before, after] = content.split(/:(.+)/); // only first colon
-                isheading = '';
-                chuckData = `${(prefix || '')}${UnOrderListEnd}<h${level}>${before}</h${level}>${after || ''}`;
-            } else {
-
-                chuckData = `${(prefix || '')}${UnOrderListEnd}<h${level}>${content}`;
-            }
-
-        }
-
-    }
-
-    while (chuckData.includes(":") && isheading.includes("#")) {
-        isheading = '';
-        chuckData = chuckData.replace(":", `</h${headinglevel}>`);
-    }
-
-    return chuckData;
-}
-
-function boldFormater(chuckData: string): string {
-    while (chuckData.includes("**")) {
-        if (/^\s*\*\*(.*?)\*\*\s*$/.test(chuckData) && !currenttype.includes("**")) {
-            chuckData = chuckData.replace(/^\s*\*\*(.*?)\*\*\s*$/, '<b>$1</b>');
-        }
-
-        // Open bold
-        else if (!currenttype.includes("**")) {
-            currenttype = "**";
-            chuckData = chuckData.replace("**", '<b>');
-        }
-
-        // Close bold
-        else if (currenttype.includes("**")) {
-            currenttype = '';
-            chuckData = chuckData.replace("**", '</b>');
-        }
-    }
-
-    return chuckData;
-}
-
-function horizontaldevider(chuckData: string): string {
-    // chuckDat = " - , '-', '- sdf'"
-
-    while ((chuckData).includes('---') && !isBlockCode) {
-                chuckData = chuckData.replace('---', '<hr class="horizontalDevider">');
-    }
+//             const prefix = headingMatch[1];                   // "something"
+//             const level = headingMatch[2].length;             // 3
+//             const content = headingMatch[3];              // "heading"
 
 
-    return chuckData;
-}
+//             // const level = headingMatch[1].length;
+//             // const content = headingMatch[2].trim();
+//             headinglevel = level;
+//             isheading = "#".repeat(level);
 
-function unorderlist(chuckData: string): string {
-    // chuckDat = " - , '-', '- sdf'"
+//             //checking UorderListBeforeHeading
+//             islist = true;
+//             if (isUnOrderEndWaiting) {
+//                 isUnOrderEndWaiting = false;
+//                 UnOrderListEnd = "</li></ul>";
+//                 UnOrderListCount = 0;
+//             }else{
+//                 UnOrderListEnd = "";
+//             }
 
-    while (/(\s+-|\s+-\s+|-\s+)/g.test(chuckData) && !isBlockCode) {
-        if (!isUnOrdernext) {
-            isUnOrdernext = true
-            if (UnOrderListCount == 0) {
-                chuckData = chuckData.replace(/\s*-\s*/, "<ul><li>");
-            } else {
+//             if (content.includes(":")) {
+//                 const [before, after] = content.split(/:(.+)/); // only first colon
+//                 isheading = '';
+//                 chuckData = `${(prefix || '')}${UnOrderListEnd}<h${level}>${before}</h${level}>${after || ''}`;
+//             } else {
 
-                chuckData = chuckData.replace(/\s*-\s*/, "<li>");
-            }
+//                 chuckData = `${(prefix || '')}${UnOrderListEnd}<h${level}>${content}`;
+//             }
 
-            UnOrderListCount++;
-            // isUnOrderEndWaiting = true;
-        }
-        else {
+//         }
 
-            chuckData = chuckData.replace(/\s*-\s*/, "</li><li>");
-            isUnOrdernext = false;
-            isUnOrderEndWaiting = true;
-            UnOrderListCount++;
-        }
-    }
+//     }
+
+//     while (chuckData.includes(":") && isheading.includes("#")) {
+//         isheading = '';
+//         chuckData = chuckData.replace(":", `</h${headinglevel}>`);
+//     }
+
+//     return chuckData;
+// }
+
+// function boldFormater(chuckData: string): string {
+//     while (chuckData.includes("**")) {
+//         if (/^\s*\*\*(.*?)\*\*\s*$/.test(chuckData) && !currenttype.includes("**")) {
+//             chuckData = chuckData.replace(/^\s*\*\*(.*?)\*\*\s*$/, '<b>$1</b>');
+//         }
+
+//         // Open bold
+//         else if (!currenttype.includes("**")) {
+//             currenttype = "**";
+//             chuckData = chuckData.replace("**", '<b>');
+//         }
+
+//         // Close bold
+//         else if (currenttype.includes("**")) {
+//             currenttype = '';
+//             chuckData = chuckData.replace("**", '</b>');
+//         }
+//     }
+
+//     return chuckData;
+// }
+
+// function horizontaldevider(chuckData: string): string {
+//     // chuckDat = " - , '-', '- sdf'"
+
+//     while ((chuckData).includes('---') && !isBlockCode) {
+//                 chuckData = chuckData.replace('---', '<hr class="horizontalDevider">');
+//     }
 
 
-    return chuckData;
-}
-function orderlist(chuckData: string): string {
-    // chuckDat = " - , '-', '- sdf'"
+//     return chuckData;
+// }
 
-    while (/\b\d+\.\s/.test(chuckData) && !islist) {
-        islist = true;
-        if (isUnOrderEndWaiting) {
-            isUnOrderEndWaiting = false;
-            chuckData = chuckData.replace(/(\b\d+\.\s+.*)/, "</li></ul><div>$1");
-            UnOrderListCount = 0;
-        } else {
-            chuckData = chuckData.replace(/(\b\d+\.\s+.*)/, "<div>$1");
-        }
-    }
-    while (chuckData.includes(":") && islist) {
-        chuckData = chuckData.replace(":", "</div>");
-        // if (!chuckData.includes(":")) {
-        islist = false;
-        // }
-    }
+// function unorderlist(chuckData: string): string {
+//     // chuckDat = " - , '-', '- sdf'"
 
-    return chuckData;
-}
+//     while (/(\s+-|\s+-\s+|-\s+)/g.test(chuckData) && !isBlockCode) {
+//         if (!isUnOrdernext) {
+//             isUnOrdernext = true
+//             if (UnOrderListCount == 0) {
+//                 chuckData = chuckData.replace(/\s*-\s*/, "<ul><li>");
+//             } else {
+
+//                 chuckData = chuckData.replace(/\s*-\s*/, "<li>");
+//             }
+
+//             UnOrderListCount++;
+//             // isUnOrderEndWaiting = true;
+//         }
+//         else {
+
+//             chuckData = chuckData.replace(/\s*-\s*/, "</li><li>");
+//             isUnOrdernext = false;
+//             isUnOrderEndWaiting = true;
+//             UnOrderListCount++;
+//         }
+//     }
+
+
+//     return chuckData;
+// }
+// function orderlist(chuckData: string): string {
+//     // chuckDat = " - , '-', '- sdf'"
+
+//     while (/\b\d+\.\s/.test(chuckData) && !islist) {
+//         islist = true;
+//         if (isUnOrderEndWaiting) {
+//             isUnOrderEndWaiting = false;
+//             chuckData = chuckData.replace(/(\b\d+\.\s+.*)/, "</li></ul><div>$1");
+//             UnOrderListCount = 0;
+//         } else {
+//             chuckData = chuckData.replace(/(\b\d+\.\s+.*)/, "<div>$1");
+//         }
+//     }
+//     while (chuckData.includes(":") && islist) {
+//         chuckData = chuckData.replace(":", "</div>");
+//         // if (!chuckData.includes(":")) {
+//         islist = false;
+//         // }
+//     }
+
+//     return chuckData;
+// }
 function formulablock(chuckData: string): string {
     // chuckDat = " - , '-', '- sdf'"
     while (chuckData.includes('\\[') && !isBlockFormula) {
@@ -246,21 +246,21 @@ function formulablock(chuckData: string): string {
     return chuckData;
 }
 
-function codeblock(chuckData: string): string {
-    // chuckDat = " - , '-', '- sdf'"
-    while (chuckData.includes('```') && !isBlockCode) {
-        // chuckData = FormulaMatch(chuckData);
+// function codeblock(chuckData: string): string {
+//     // chuckDat = " - , '-', '- sdf'"
+//     while (chuckData.includes('```') && !isBlockCode) {
+//         // chuckData = FormulaMatch(chuckData);
 
-        isBlockCode = true;
-        chuckData = chuckData.replace('```', "<pre class='code-card'>");
-    }
-    while (chuckData.includes('```') && isBlockCode) {
-        isBlockCode = false;
-        chuckData = chuckData.replace('```', "</pre>");
-    }
+//         isBlockCode = true;
+//         chuckData = chuckData.replace('```', "<pre class='code-card'>");
+//     }
+//     while (chuckData.includes('```') && isBlockCode) {
+//         isBlockCode = false;
+//         chuckData = chuckData.replace('```', "</pre>");
+//     }
 
-    return chuckData;
-}
+//     return chuckData;
+// }
 
 const myConvertLatex = (latex: string): string => {
     const fullHTML = katex.renderToString(latex, {
